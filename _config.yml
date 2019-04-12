@@ -108,6 +108,22 @@ sitemap:
 baidusitemap:
   path: baidusitemap.xml
   
+# hexo-douban
+#https://github.com/mythsman/hexo-douban   
+douban:
+  user: elietio
+  builtin: true
+  book:
+    title: '读书'
+    quote: '读书列表'
+  movie:
+    title: '电影'
+    quote: '追剧列表'
+  game:
+    title: '游戏'
+    quote: '游戏列表'
+  timeout: 10000   
+  
 ## Live2D
 ## https://github.com/EYHN/hexo-helper-live2d
 live2d:

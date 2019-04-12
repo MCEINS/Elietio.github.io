@@ -29,6 +29,13 @@ cache:
   #styles: source/_data/styles.styl
 
 
+custom_css:
+  # the style of post body link
+  post_body_a:
+    enable: true
+    normal_color: "#0593d3"
+    hover_color: "#0477ab"
+
 # ---------------------------------------------------------------
 # Site Information Settings
 # See: https://theme-next.org/docs/getting-started/
@@ -158,10 +165,13 @@ baidu_push: true
 # External url should start with http:// or https://
 menu:
   home: / || desktop
-  about: /about/ || user-circle-o
+  #about: /about/ || user-circle-o
   tags: /tags/ || tags
   categories: /categories/ || list
   archives: /archives/ || database
+  #Books: /books   ||book  #This is your books page
+  Movies: /movies ||film  #This is your movies page
+  Games: /games ||gamepad  #This is your games page
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
