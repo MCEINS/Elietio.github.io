@@ -106,4 +106,40 @@ search:
 sitemap:
   path: sitemap.xml
 baidusitemap:
-  path: baidusitemap.xml    
+  path: baidusitemap.xml
+  
+## Live2D
+## https://github.com/EYHN/hexo-helper-live2d
+live2d:
+    enable: true
+  # enable: false
+    scriptFrom: local # 默认
+    pluginRootPath: live2dw/ # 插件在站点上的根目录(相对路径)
+    pluginJsPath: lib/ # 脚本文件相对与插件根目录路径
+    pluginModelPath: assets/ # 模型文件相对与插件根目录路径
+  # scriptFrom: jsdelivr # jsdelivr CDN
+  # scriptFrom: unpkg # unpkg CDN
+  # scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url
+    tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中
+    debug: false # 调试, 是否在控制台输出日志
+    model:
+      #scale: 0.7 #缩放
+      use: poi # npm-module package name
+    # use: wanko # 博客根目录/live2d_models/ 下的目录名
+    # use: ./wives/wanko # 相对于博客根目录的路径
+    # use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url
+    display: # 模型位置，根据不同的模型自行调整
+      #superSample: 2 # 超采样等级
+      position: left
+      #width: 240 #canvas的长度
+      #height: 300 #tcanvas的高度
+      hOffset: 120 # canvas水平偏移
+      vOffset: -80 #canvas垂直偏移
+    mobile: # 是否适用于移动端
+      show: true
+      scale: 0.7 #移动设备上的缩放
+    react: #opacity 透明度
+      opacity: 0.9
+    dialog: 
+      enable: true # 显示人物对话框
+      hitokoto: true #使用一言API 
