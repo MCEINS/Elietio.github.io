@@ -6,7 +6,7 @@ test!!!!Hello word!
 ## Quick Start
 
 ### Create a new post
-
+<!-- more -->
 ``` bash
 $ hexo new "My New Post"
 ```

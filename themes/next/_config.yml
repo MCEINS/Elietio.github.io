@@ -48,7 +48,7 @@ rss: /atom.xml
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  since: 2018
+  since: 2016
 
   # Icon between year and copyright info.
   icon:
@@ -315,7 +315,7 @@ excerpt_description: true
 # Automatically Excerpt (Not recommend).
 # Use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: true 
+  enable: false 
   length: 200
 
 # Read more button
@@ -399,7 +399,7 @@ post_edit:
 mobile_layout_economy: false
 
 # Android Chrome header panel color ($brand-bg / $headband-bg => $black-deep).
-android_chrome_color: "#49b1f5"
+android_chrome_color: "#222"
 
 # Hide sticky headers and color the menu bar on Safari (iOS / macOS).
 safari_rainbow: false
@@ -996,7 +996,7 @@ pace_theme: pace-theme-center-atom
 # Canvas-nest
 # Dependencies: https://github.com/theme-next/theme-next-canvas-nest
 canvas_nest:
-  enable: true
+  enable: false
   onmobile: true # display on mobile or not
   color: "0,0,255" # RGB values, use ',' to separate
   opacity: 0.5 # the opacity of line: 0~1

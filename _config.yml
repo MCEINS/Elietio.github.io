@@ -50,7 +50,7 @@ highlight:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 5
   order_by: -date
   
 # Category & Tag
@@ -81,7 +81,7 @@ deploy:
   type: git
   repo: 
     github: git@github.com:Elietio/Elietio.github.io.git
-    git: git@172.96.242.112:/home/git/blog.git 
+    git: git@elietio.xyz:/home/git/blog.git 
   branch: master
 
 feed:
@@ -152,7 +152,7 @@ live2d:
       hOffset: 120 # canvas水平偏移
       vOffset: -80 #canvas垂直偏移
     mobile: # 是否适用于移动端
-      show: true
+      show: fasle
       scale: 0.7 #移动设备上的缩放
     react: #opacity 透明度
       opacity: 0.9
