@@ -1,7 +1,7 @@
 ---
-title: 自建Shadowsocks频繁被封？赶紧试试流量伪装吧
+title: 自建Shadowsocks频繁被封？赶紧试试simple-obfs流量混淆吧
 date: 2019-04-28 22:14:49
-tags: [科学上网,Shadowsocks]
+tags: [科学上网,Shadowsocks,simple-obfs]
 categories: [技术]
 mathjax: true
 copyright: true
