@@ -1,8 +1,10 @@
 ---
 title: Test
-date: 2018-3-5 
+date: 2018-5-5 
 ---
-test!!!!Hello word!
+netease-playlist
+
+{% meting "52921110" "netease" "playlist" "autoplay" "mutex:true" "listmaxheight:340px" "preload:none" "theme:#ad7a86"%}
 ## Quick Start
 
 ### Create a new post

@@ -14,7 +14,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://www.elietio.xyz
 root: /
-permalink: :year/:month/:title/
+permalink: :year/:month/:title.html
 permalink_defaults:
 
 # Directory
@@ -25,8 +25,7 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
-  - README.md
+skip_render: README.md
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -41,7 +40,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
   
 # Home page setting
@@ -89,7 +88,7 @@ feed:
   path: atom.xml
   limit: 20
   hub:
-  content:
+  content: true
   content_limit: 140
   content_limit_delim: ' '
   order_by: -date
@@ -152,10 +151,16 @@ live2d:
       hOffset: 120 # canvas水平偏移
       vOffset: -80 #canvas垂直偏移
     mobile: # 是否适用于移动端
-      show: fasle
+      show: false
       scale: 0.7 #移动设备上的缩放
     react: #opacity 透明度
       opacity: 0.9
     dialog: 
       enable: true # 显示人物对话框
       hitokoto: true #使用一言API 
+      
+aplayer:
+  #cdn: https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js  # 引用 APlayer.js 外部 CDN 地址 (默认不开启)
+  #style_cdn: https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css
+  meting: true       # MetingJS 支持
+  #meting_cdn: https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js # 引用 Meting.js 外部 CDN 地址 (默认不开启)    

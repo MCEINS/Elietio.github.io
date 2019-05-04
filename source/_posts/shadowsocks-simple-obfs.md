@@ -123,7 +123,7 @@ Obfuscation hostname: your domain
 
 #### Padavan:
 
-如果你的路由器和我一样使用Padvan，可以在ss配置页面设置如下
+如果你的路由器和我一样使用Padavan，可以在ss配置页面设置如下
 
 - `插件名称`：`obfs-local`
 - `插件参数`：`obfs=http;obfs-host=your domain`

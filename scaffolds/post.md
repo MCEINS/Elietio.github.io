@@ -1,17 +1,37 @@
 ---
 title: {{ title }}
 date: {{ date }}
-tags:
 categories:
-mathjax: true
+tags: []
+description:
 copyright: true
 comment: true
-photo: 
+photo: /img/{{ title }}/abstract.png 
 ---
 
-{% note default %}
+{% note class_name no-icon %} 
+- default
+- primary
+- success
+- info
+- warning
+- danger
 {% endnote %}
 
 <!-- more -->
 
+{% tabs contenxt, 1 %}
+<!-- tab contenxt@fontawesome-->
+contenxt
+<!-- endtab -->
+<!-- tab contenxt -->
+contenxt
+<!-- endtab -->
+{% endtabs %}
+
+<blockquote class="question">ÄÚÈÝ</blockquote>
+
+<span id="inline-toc">1.</span>
+
+{% btn https://www, click, download fa-lg fa-fw %}
 ---
