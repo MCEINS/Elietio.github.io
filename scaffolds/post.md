@@ -29,7 +29,7 @@ contenxt
 <!-- endtab -->
 {% endtabs %}
 
-<blockquote class="question">ÄÚÈİ</blockquote>
+<blockquote class="question">å†…å®¹</blockquote>
 
 <span id="inline-toc">1.</span>
 
