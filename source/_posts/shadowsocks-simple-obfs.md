@@ -1,5 +1,5 @@
 ---
-title: 自建Shadowsocks频繁被封？赶紧试试simple-obfs流量混淆吧
+title: Deprecated--自建Shadowsocks频繁被封？赶紧试试simple-obfs流量混淆
 date: 2019-04-28 22:14:49
 tags: [科学上网,Shadowsocks,simple-obfs]
 categories: [技术]
@@ -8,9 +8,17 @@ copyright: true
 comment: true
 photo: 
 ---
+{% note info no-icon %}
+🔊 update:推荐使用[v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)或者[v2ray](https://www.v2ray.com/)
+现在v2ray已经很完善了，无论是v2ray还是v2ray-plugin都支持tls+websocket+反代的方案，并且比simple-obfs要好，但是大体思路和下文是类似的。至于这两者的选择可以自行查阅了解，简单说其中一点就是v2ray配置较为复杂，但是社区文档相当完善，请耐心阅读，v2ray-plugin从名字上看就知道是基于shadowsocks的v2ray插件，配置文件简单些，了解了v2ray你也就了解了v2ray-plugin该如何使用，当然你可以同时部署不同plugin的ss-server和v2ray-server自由切换。想使用tls+websocket+反代这一套方案，你需要以下几点
 
-年后用的一直挺稳的搬瓦工VPS搭建的Shadowsocks端口频繁被封，换了几次端口后感觉太麻烦，于是决定网上找找有没有好的思路，于是发现了[simple-obfs](https://github.com/shadowsocks/simple-obfs),其思路是ss客户端对Shadowsocks流量混淆加密伪装成正常http或者https流量，服务端ss-server再对流量解密，以此躲过GFW的封杀。这个方案挺有意思，很多人又再此基础上进行了更多的伪装扩展，稳定性比之前纯Shadowsocks流加密更安全。不过原作者已经不再维护此项目而是转入了[v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)，由于本人使用的路由器SS固件只支持simple-obfs插件模式，因此决定还是先试试simple-obfs的效果。
+- 一个域名，付费免费看你自己口袋
+- 为域名申请SSL证书，这个是tls必须的
+- 基础的Linux操作和问题分析排查能力
+{% endnote %}
 <!-- more -->
+###  👇🏻Deprecated
+年后用的一直挺稳的搬瓦工VPS搭建的Shadowsocks端口频繁被封，换了几次端口后感觉太麻烦，于是决定网上找找有没有好的思路，于是发现了[simple-obfs](https://github.com/shadowsocks/simple-obfs),其思路是ss客户端对Shadowsocks流量混淆加密伪装成正常http或者https流量，服务端ss-server再对流量解密，以此躲过GFW的封杀。这个方案挺有意思，很多人又再此基础上进行了更多的伪装扩展，稳定性比之前纯Shadowsocks流加密更安全。不过原作者已经不再维护此项目而是转入了[v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)，由于本人使用的路由器SS固件似乎只支持simple-obfs插件模式，因此决定还是先试试simple-obfs的效果。
 需要：
 - [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [simple-obfs](https://github.com/shadowsocks/simple-obfs)
