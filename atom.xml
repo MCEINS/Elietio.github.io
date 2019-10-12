@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.elietio.xyz/"/>
-  <updated>2019-10-11T12:32:52.993Z</updated>
+  <updated>2019-10-12T14:48:59.999Z</updated>
   <id>https://www.elietio.xyz/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>谷歌SLOT A/B机制下安卓刷入TWRP和Magisk以及OTA的一些方法</title>
+    <link href="https://www.elietio.xyz/2019/10/twrp-magisk-ota.html"/>
+    <id>https://www.elietio.xyz/2019/10/twrp-magisk-ota.html</id>
+    <published>2019-10-12T14:14:49.000Z</published>
+    <updated>2019-10-12T14:48:59.999Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>A/B 系统分区是 Google 在 Android 7.0 时代引入的新机制，采用这个机制的设备拥有 A、B 两套系统分区，用户数据则能够在这两套系统分区之间共用。<br><a id="more"></a><br>这种分区机制带来的最大好处是无缝系统更新（seemless updates），当我们在 A 系统中进行 OTA 更新时，而实际更新的是另个一并未启用的 B 系统。手机重启后，系统分区从 A 切换到 B新系统，介于此机制，我们可以实现OTA升级后仍然保留Magisk的Root权限。由于使用了 A/B 分区，因此没有独立的 Recovery 分区；Recovery 现在是 Boot 的一部分。所以要通过 fastboot boot 实现临时从指定镜像启动，从而进入 TWRP，并通过刷入 twrp-installer 实现对 TWRP 的持久化。</p><h2 id="解锁Bootloader"><a href="#解锁Bootloader" class="headerlink" title="解锁Bootloader"></a>解锁Bootloader</h2><ol><li>在「设置 - 关于手机」中点击 5 次「版本号」启用开发者选项,前往「设置 - 系统 - 开发者选项」，分别启用「OEM 解锁」和「高级重启」 </li><li>长按电源键，从电源菜单中选择「引导器模式」，手机将会自动重启进入 Bootloader 模式。</li><li><p>连接电脑，在cmd窗口内输入adb命令：</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fastboot devices # 检查设备是否连接</span><br><span class="line">fastboot oem unlock</span><br></pre></td></tr></table></figure><p>回车，手机即出现解锁确认界面，音量键进行选择-「UNLOCK THE BOOTLOADER」，按电源键确认，手机重启开始解锁</p></li></ol><h2 id="刷入-TWRP"><a href="#刷入-TWRP" class="headerlink" title="刷入 TWRP"></a>刷入 TWRP</h2><p>需要如下：</p><ul><li>下载 <a href="https://twrp.me/Devices/" target="_blank" rel="noopener">TWRP</a></li><li>需要 twrp.img 和 twrp-installer.zip 两个文件</li></ul><p>执行以下操作：</p><ol><li>执行 <code>adb reboot bootloader</code> 进入 Bootloader 界面</li><li>执行 <code>fastboot boot twrp.img</code> 进入临时 TWRP</li><li>在TWRP中刷入twrp-installer.zip使TWRP持久化，安装包会在 AB 两个分区中都安装一次 TWRP，这样无论手机从哪个分区启动都可以进入 TWRP。</li></ol><h2 id="刷入Magisk获取Root"><a href="#刷入Magisk获取Root" class="headerlink" title="刷入Magisk获取Root"></a>刷入Magisk获取Root</h2><h3 id="安装-Magisk（使用固化TWRP）"><a href="#安装-Magisk（使用固化TWRP）" class="headerlink" title="安装 Magisk（使用固化TWRP）"></a>安装 Magisk（使用固化TWRP）</h3><p>需要如下：</p><ul><li>下载<a href="https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445" target="_blank" rel="noopener">Magisk-vX.X.zip 刷机包及 Magisk Manager.apk</a></li></ul><p>执行以下操作：</p><ol><li>重启进去TERP</li><li>在 TWRP 中刷入你下载的 Magisk 安装包，成功后重新启动手机</li><li>安装 Magisk Manager 的 apk，确认 Magisk 已成功激活</li></ol><h3 id="安装-Magisk（使用临时-TWRP）"><a href="#安装-Magisk（使用临时-TWRP）" class="headerlink" title="安装 Magisk（使用临时 TWRP）"></a>安装 Magisk（使用临时 TWRP）</h3><p>需要如下：</p><ul><li>下载<a href="https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445" target="_blank" rel="noopener">Magisk-vX.X.zip 刷机包及 Magisk Manager.apk</a></li><li>下载 <a href="https://twrp.me/Devices/" target="_blank" rel="noopener">TWRP</a></li></ul><p>执行以下操作：</p><ol><li>执行 <code>adb reboot bootloader</code> 进入 Bootloader 界面</li><li>执行 <code>fastboot boot TWRP.img</code> 进入临时 TWRP</li><li>在 TWRP 中刷入你下载的 Magisk 安装包<br>可选择Sideload 模式，TWRP 中输入正确密码解密分区，并选择 Advanced -&gt; ADB Sideload。<br>执行 <code>adb sideload Magisk-vX.X.zip</code></li><li><code>fastboot reboot</code>重新启动手机</li><li>安装 Magisk Manager 的 apk，确认 Magisk 已成功激活</li></ol><h3 id="安装-Magisk（免-TWRP）"><a href="#安装-Magisk（免-TWRP）" class="headerlink" title="安装 Magisk（免 TWRP）"></a>安装 Magisk（免 TWRP）</h3><p>需要如下：</p><ul><li>下载或提取ROM 所对应的 boot.img</li><li>下载<a href="https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445" target="_blank" rel="noopener">Magisk Manager.apk</a></li></ul><p>执行以下操作：</p><ol><li>安装 Magisk Manager 的 apk。</li><li>用 Magisk Manager 给 boot.img 手动补丁（<code>install —— 修补 boot 镜像文件</code>），将获得的 <code>magisk_patched.img</code> 传回电脑。</li><li><p>再次进入 Bootloader，输入</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fastboot boot magisk_patched.img</span><br><span class="line">fastboot flash boot magisk_patched.img #如果上面命令不生效可以使用这个，Android <span class="number">10</span></span><br></pre></td></tr></table></figure><p>来加载生成后的 boot 分区文件获取<strong>临时 root</strong> </p><ul><li>可使用<code>fastboot flash recovery magisk_patched.img</code>修复recovery image</li></ul></li><li>重启开机后，Magisk Manager 暂时有了 Root 权限，此时可以在 Magisk Manager 中正式安装 Magisk（<code>安装（install）——install——Direct Install（直接安装）</code>）。</li></ol><h2 id="OTA时的操作"><a href="#OTA时的操作" class="headerlink" title="OTA时的操作"></a>OTA时的操作</h2><h3 id="保留-TWRP"><a href="#保留-TWRP" class="headerlink" title="保留 TWRP"></a>保留 TWRP</h3><p>在 Magisk Manager 中下载并安装插件 TWRP A/B Retenion Script</p><h3 id="保留-Root"><a href="#保留-Root" class="headerlink" title="保留 Root"></a>保留 Root</h3><ul><li>能检测到 OTA 更新后，点击进入 Magisk Manager 应用，找到位于主界面的「卸载 Magisk」选项，然后点击「还原原厂镜像」，不要重启直接OTA(或许不需要还原这一步？但是magisk<a href="https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation" target="_blank" rel="noopener">官方文档</a>有提及)</li></ul><ol><li>使用 OTA 更新并安装（自动下载全量包），安装完成后不要重启</li><li>在 Magisk Manager 中「安装 Magisk」</li><li>选择「安装到未使用的槽位 (OTA 后)」(<code>Install to Inactive Slot (After OTA)</code>)</li><li>写入完成后重启即可</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;A/B 系统分区是 Google 在 Android 7.0 时代引入的新机制，采用这个机制的设备拥有 A、B 两套系统分区，用户数据则能够在这两套系统分区之间共用。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="https://www.elietio.xyz/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="安卓" scheme="https://www.elietio.xyz/tags/%E5%AE%89%E5%8D%93/"/>
+    
+      <category term="ROOT" scheme="https://www.elietio.xyz/tags/ROOT/"/>
+    
+  </entry>
   
   <entry>
     <title>socketRead0阻塞导致线程卡死问题分析排查</title>
