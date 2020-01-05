@@ -23,13 +23,6 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/2019/04/shadowsocks-simple-obfs.html</loc>
-    
-    <lastmod>2019-09-29T14:01:59.100Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.elietio.xyz/2019/08/HDD.html</loc>
     
     <lastmod>2019-08-28T13:54:15.903Z</lastmod>
@@ -100,13 +93,6 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/2017/06/java-singleton.html</loc>
-    
-    <lastmod>2019-08-14T14:56:08.226Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.elietio.xyz/2017/08/java-web-servlet-development-portal.html</loc>
     
     <lastmod>2019-08-14T14:56:08.226Z</lastmod>
@@ -114,14 +100,21 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/2019/04/hexo-themes-subtree.html</loc>
+    <loc>https://www.elietio.xyz/2017/06/java-singleton.html</loc>
+    
+    <lastmod>2019-08-14T14:56:08.226Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.elietio.xyz/2016/12/java-classload.html</loc>
     
     <lastmod>2019-08-14T14:56:08.225Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/2016/12/java-classload.html</loc>
+    <loc>https://www.elietio.xyz/2019/04/hexo-themes-subtree.html</loc>
     
     <lastmod>2019-08-14T14:56:08.225Z</lastmod>
     
