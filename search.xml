@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[一次-Djava.ext.dir配置不当的问题]]></title>
+    <url>%2F2020%2F01%2F%E4%B8%80%E6%AC%A1-Djava.ext.dir%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E7%9A%84%E9%97%AE%E9%A2%98.html</url>
+    <content type="text"><![CDATA[问题描述：服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常 123java.security.NoSuchAlgorithmException: Algorithm HmacSHA256 not available at javax.crypto.Mac.getInstance(Mac.java:181) ...... 问题排查：服务是springboot的项目，直接打包成jar包，启动脚本中使用java -jar的形式启动。由于用到了一些公司内部封装的依赖jar包，而这些jar必须外部加载不能打进jar里面启动，所以使用了-Djava.ext.dirs去加载外部依赖jar包，这时一个陷阱就出现了，-Djava.ext.dirs会覆盖掉java本身的ext设置，java.ext.dirs指定的目录由ExtClassLoader加载器加载，如果没有指定该系统属性，那么该加载器默认加载$JAVA_HOME/jre/lib/ext目录下的所有jar文件 1234567891011-rwxr-xr-x 1 3860502 Mar 15 2017 cldrdata.jar-rwxr-xr-x 1 8286 Mar 15 2017 dnsns.jar-rwxr-xr-x 1 44516 Mar 15 2017 jaccess.jar-rwxr-xr-x 1 18490072 Mar 15 2017 jfxrt.jar-rwxr-xr-x 1 1179093 Mar 15 2017 localedata.jar-rwxr-xr-x 1 1269 Mar 15 2017 meta-index-rwxr-xr-x 1 2022531 Mar 15 2017 nashorn.jar-rwxr-xr-x 1 42154 Mar 15 2017 sunec.jar-rwxr-xr-x 1 280161 Mar 15 2017 sunjce_provider.jar-rwxr-xr-x 1 251327 Mar 15 2017 sunpkcs11.jar-rwxr-xr-x 1 68924 Mar 15 2017 zipfs.jar 所以，只单单指定了额外依赖的jar包后，就会导致ext目录下的jar包无法加载，而这次我们新增的加解密模块使用了HmacSHA256算法，依赖于sunjce_provider.jar包的内容，当我们在本地环境调试时，直接IDEA启动，没有出现依赖加载错误的问题，而当在测试环境使用启动脚本启动并且指定了-Djava.ext.dirs就导致了依赖出错。 问题解决：问题已经找出，那么解决就很简单，-Djava.ext.dirs引入多个路径加入Java自带ext路径即可 1java -Djava.ext.dirs=../lib:$JAVA_HOME/jre/lib/ext -jar]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>排错</tag>
+        <tag>异常</tag>
+        <tag>java.ext.dirs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Mybatis一对多、多对多查询时数据覆盖问题]]></title>
+    <url>%2F2019%2F12%2FMybatis%E4%B8%80%E5%AF%B9%E5%A4%9A%E3%80%81%E5%A4%9A%E5%AF%B9%E5%A4%9A%E6%9F%A5%E8%AF%A2%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98.html</url>
+    <content type="text"><![CDATA[问题描述：在使用mybatis查询一对多结果返回对象的场景中，当主表关联的多条数据完全一致时，返回的对象只有第一条数据 12345678select A.BOND_ID, A.USER_ID, B.RESULT_ID, B.RATEfrom TABLEA A left join TABLEAB B on A.ID = B.BID_ID BOND_ID USER_ID RESULT_ID RATE 100000000000001892 abc 10000001 111 100000000000001892 abc 10000001 111 100000000000001892 abc 10000001 111 映射的xml如下 12345678&lt;resultMap id="xxx" type="xxx"&gt; &lt;result column="BOND_ID" property="bondID"/&gt; &lt;result column="USER_ID" property="userID"/&gt; &lt;collection property="resultList" ofType="xxx"&gt; &lt;result column="RESULT_ID" property="resultID" /&gt; &lt;result column="RATE" property="rate"/&gt; &lt;/collection&gt;&lt;/resultMap&gt; 按照设想，返回的 bondID=100000000000001892的对象里面的resultList应该包含三条完全一样的数据，但是实际的结果却是只有一条 问题排查：resultMap中如果不定义类似主键之类的能够区分每一条结果集的字段的话，当数据完全一致的时候会引起后面一条数据覆盖前面一条数据的现象 问题解决：查询时将一对多的多表的自增主键ID也查询出来，这样resultMap映射的数据就不会完全一致，避免了这个问题，所以在使用mybatis查询的时候最好将表的主键ID查询出来，如果不需要返回ID字段，可以在代码层面实体类转换JSON返回屏蔽掉。]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>排错</tag>
+        <tag>mybatis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[keepAlive解决druid空闲连接socket timeout 15分钟]]></title>
+    <url>%2F2019%2F12%2FkeepAlive%E8%A7%A3%E5%86%B3druid%E7%A9%BA%E9%97%B2%E8%BF%9E%E6%8E%A5socket%20timeout%2015%E5%88%86%E9%92%9F.html</url>
+    <content type="text"><![CDATA[问题描述：测试环境发现了一个很奇怪的现象，一台服务器出现了请求卡顿15分钟然后才执行SQL返回结果的现象 问题排查：最开始我们认为是网络问题，因为这台服务器网络环境比较特殊，正常我们环境的应用服务器和数据库服务器是同一网段的，而这台服务器和数据库服务器并不在同一网段，存在防火墙策略，但是后来发现能够稳定复现，并且每次都是发生在服务空闲一段时间后第一次请求，由于我们使用的是druid，于是查询了相关问题，果然网络上已经有了很多相关的描述 druid下莫名其妙hold15分钟+。疑是socket timeout超时15分钟后，重建了新连接导致 从连接池中获取到失效连接，在检验连接有效性时出现长时间等待，大概15分钟 #2905 大致原因是这样，当应用服务器和数据库服务器直接存在防火墙策略时，如果服务空闲时间过长，会被防火墙主动断开数据库连接，但是此时druid并未感知，此时当有请求过来时，如果druid配置了testWhileIdle（申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。），那么将进行一次检测，检测的方式也是根据配置的策略，一般是select 1 from dual ，由于这个连接已经被防火墙断掉，根本到达不了数据库，而druid这边则在一直等待，而这个等待的超时受到socket timeout限制，而我们服务器本身的系统socket timeout设置就是15分钟，所以druid会一直hold15分钟，直到触发超时重新建立连接。所以问题就出现了druid无法主动恢复防火墙主动断开的连接，只有当触发超时才能进行重建连接。 问题解决：问题解决的思路有两种，第一钟思路，更改jdbc的socke timeout，但是不建议，因为如果要能够快速重连，那么这个socket timeout就需要配置很短，但是这个时间很短会导致执行过长的SQL无法返回结果，socket timeout必须大于statement timeout，否则socket timeout先生效则statement timeout毫无意义，所以即使配置几分钟还是会出现请求hold的现象，因此不合适。 第二种思路，既然长时间空闲后连接会被防火墙断开，那么维持一个心跳，不让连接被防火墙断开即可，因此，需要引入druid的keepAlive 引入druid GitHub上对此配置的解释 在Druid-1.0.27之前的版本，DruidDataSource建议使用TestWhileIdle来保证连接的有效性，但仍有很多场景需要对连接进行保活处理。在1.0.28版本之后，新加入keepAlive配置，缺省关闭。使用keepAlive功能，建议使用1.1.16或者更高版本 打开KeepAlive之后的效果 初始化连接池时会填充到minIdle数量。 连接池中的minIdle数量以内的连接，空闲时间超过minEvictableIdleTimeMillis，则会执行keepAlive操作。 当网络断开等原因产生的由ExceptionSorter检测出来的死连接被清除后，自动补充连接到minIdle数量。 开启连接保活配置keepAlive,对于minIdle以内的连接，按照timeBetweenEvictionRunsMillis间隔进行保活检测，当空闲时间大于minEvictableIdleTimeMillis，发送心跳保持连接活跃，只要发送保活心跳的时间间隔小于防火墙断开空闲连接的时间即可。对于下面配置，只有1个空闲连接在空闲状态下会在5分钟左右进行心跳，保持长时间存活。 12345678minIdle: 1timeBetweenEvictionRunsMillis: 60000minEvictableIdleTimeMillis: 300000validationQuery: SELECT 1 FROM DUALvalidationQueryTimeout: 10keepAlive: truetestWhileIdle: true....]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>keepAlive</tag>
+        <tag>druid</tag>
+        <tag>socketRead0</tag>
+        <tag>socket timeout</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[谷歌SLOT A/B机制下安卓刷入TWRP和Magisk以及OTA的一些方法]]></title>
     <url>%2F2019%2F10%2Ftwrp-magisk-ota.html</url>
     <content type="text"><![CDATA[A/B 系统分区是 Google 在 Android 7.0 时代引入的新机制，采用这个机制的设备拥有 A、B 两套系统分区，用户数据则能够在这两套系统分区之间共用。这种分区机制带来的最大好处是无缝系统更新（seemless updates），当我们在 A 系统中进行 OTA 更新时，而实际更新的是另个一并未启用的 B 系统。手机重启后，系统分区从 A 切换到 B新系统，介于此机制，我们可以实现OTA升级后仍然保留Magisk的Root权限。由于使用了 A/B 分区，因此没有独立的 Recovery 分区；Recovery 现在是 Boot 的一部分。所以要通过 fastboot boot 实现临时从指定镜像启动，从而进入 TWRP，并通过刷入 twrp-installer 实现对 TWRP 的持久化。 解锁Bootloader 在「设置 - 关于手机」中点击 5 次「版本号」启用开发者选项,前往「设置 - 系统 - 开发者选项」，分别启用「OEM 解锁」和「高级重启」 长按电源键，从电源菜单中选择「引导器模式」，手机将会自动重启进入 Bootloader 模式。 连接电脑，在cmd窗口内输入adb命令： 12fastboot devices # 检查设备是否连接fastboot oem unlock 回车，手机即出现解锁确认界面，音量键进行选择-「UNLOCK THE BOOTLOADER」，按电源键确认，手机重启开始解锁 刷入 TWRP需要如下： 下载 TWRP 需要 twrp.img 和 twrp-installer.zip 两个文件 执行以下操作： 执行 adb reboot bootloader 进入 Bootloader 界面 执行 fastboot boot twrp.img 进入临时 TWRP 在TWRP中刷入twrp-installer.zip使TWRP持久化，安装包会在 AB 两个分区中都安装一次 TWRP，这样无论手机从哪个分区启动都可以进入 TWRP。 刷入Magisk获取Root安装 Magisk（使用固化TWRP）需要如下： 下载Magisk-vX.X.zip 刷机包及 Magisk Manager.apk 执行以下操作： 重启进去TERP 在 TWRP 中刷入你下载的 Magisk 安装包，成功后重新启动手机 安装 Magisk Manager 的 apk，确认 Magisk 已成功激活 安装 Magisk（使用临时 TWRP）需要如下： 下载Magisk-vX.X.zip 刷机包及 Magisk Manager.apk 下载 TWRP 执行以下操作： 执行 adb reboot bootloader 进入 Bootloader 界面 执行 fastboot boot TWRP.img 进入临时 TWRP 在 TWRP 中刷入你下载的 Magisk 安装包可选择Sideload 模式，TWRP 中输入正确密码解密分区，并选择 Advanced -&gt; ADB Sideload。执行 adb sideload Magisk-vX.X.zip fastboot reboot重新启动手机 安装 Magisk Manager 的 apk，确认 Magisk 已成功激活 安装 Magisk（免 TWRP）需要如下： 下载或提取ROM 所对应的 boot.img 下载Magisk Manager.apk 执行以下操作： 安装 Magisk Manager 的 apk。 用 Magisk Manager 给 boot.img 手动补丁（install —— 修补 boot 镜像文件），将获得的 magisk_patched.img 传回电脑。 再次进入 Bootloader，输入 12fastboot boot magisk_patched.imgfastboot flash boot magisk_patched.img #如果上面命令不生效可以使用这个，Android 10 来加载生成后的 boot 分区文件获取临时 root 可使用fastboot flash recovery magisk_patched.img修复recovery image 重启开机后，Magisk Manager 暂时有了 Root 权限，此时可以在 Magisk Manager 中正式安装 Magisk（安装（install）——install——Direct Install（直接安装））。 OTA时的操作保留 TWRP在 Magisk Manager 中下载并安装插件 TWRP A/B Retenion Script 保留 Root 能检测到 OTA 更新后，点击进入 Magisk Manager 应用，找到位于主界面的「卸载 Magisk」选项，然后点击「还原原厂镜像」，不要重启直接OTA(或许不需要还原这一步？但是magisk官方文档有提及) 使用 OTA 更新并安装（自动下载全量包），安装完成后不要重启 在 Magisk Manager 中「安装 Magisk」 选择「安装到未使用的槽位 (OTA 后)」(Install to Inactive Slot (After OTA)) 写入完成后重启即可]]></content>
@@ -21,8 +60,8 @@
       </categories>
       <tags>
         <tag>排错</tag>
-        <tag>异常</tag>
         <tag>socketRead0</tag>
+        <tag>异常</tag>
       </tags>
   </entry>
   <entry>

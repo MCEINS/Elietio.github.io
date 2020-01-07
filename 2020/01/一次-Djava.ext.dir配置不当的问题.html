@@ -151,13 +151,18 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="零の轨迹">
-<meta property="og:url" content="https://www.elietio.xyz/tags/simple-obfs/index.html">
+  <meta name="description" content="问题描述：服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常">
+<meta name="keywords" content="排错,异常,java.ext.dirs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次-Djava.ext.dir配置不当的问题">
+<meta property="og:url" content="https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题.html">
 <meta property="og:site_name" content="零の轨迹">
+<meta property="og:description" content="问题描述：服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T13:59:25.325Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="零の轨迹">
+<meta name="twitter:title" content="一次-Djava.ext.dir配置不当的问题">
+<meta name="twitter:description" content="问题描述：服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常">
 
 
 
@@ -167,7 +172,7 @@
 
   
   
-  <link rel="canonical" href="https://www.elietio.xyz/tags/simple-obfs/"/>
+  <link rel="canonical" href="https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题"/>
 
 
 
@@ -177,7 +182,7 @@
   };
 </script>
 
-  <title>标签: simple-obfs | 零の轨迹</title>
+  <title>一次-Djava.ext.dir配置不当的问题 | 零の轨迹</title>
   
 
 
@@ -247,7 +252,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -323,7 +328,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -464,91 +469,283 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>simple-obfs<small>标签</small>
-        </h2>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题.html"/>
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elietio"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.png"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零の轨迹"/>
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/2019/04/shadowsocks-simple-obfs.html" itemprop="url">
-            
-              <span itemprop="name">Deprecated--自建Shadowsocks频繁被封？赶紧试试simple-obfs流量混淆</span>
-            
-          </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">一次-Djava.ext.dir配置不当的问题
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-04-28T22:14:49+08:00"
-              content="2019-04-28">
-          04-28
-        </time>
-      </div>
+              
+            
+          </h2>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-07 20:26:54 / 修改时间：21:59:25" itemprop="dateCreated datePublished" datetime="2020-01-07T20:26:54+08:00">2020-01-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2020/01/一次-Djava.ext.dir配置不当的问题.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/一次-Djava.ext.dir配置不当的问题.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2020/01/一次-Djava.ext.dir配置不当的问题.html" class="leancloud_visitors" data-flag-title="一次-Djava.ext.dir配置不当的问题">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常<br><a id="more"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.security.NoSuchAlgorithmException: Algorithm HmacSHA256 not available</span><br><span class="line">        at javax.crypto.Mac.getInstance(Mac.java:<span class="number">181</span>)</span><br><span class="line">        ......</span><br></pre></td></tr></table></figure>
+<h3 id="问题排查："><a href="#问题排查：" class="headerlink" title="问题排查："></a>问题排查：</h3><p>服务是springboot的项目，直接打包成jar包，启动脚本中使用<code>java -jar</code>的形式启动。由于用到了一些公司内部封装的依赖jar包，而这些jar必须外部加载不能打进jar里面启动，所以使用了<code>-Djava.ext.dirs</code>去加载外部依赖jar包，这时一个陷阱就出现了，<code>-Djava.ext.dirs</code>会覆盖掉java本身的ext设置，<code>java.ext.dirs</code>指定的目录由ExtClassLoader加载器加载，如果没有指定该系统属性，那么该加载器默认加载<code>$JAVA_HOME/jre/lib/ext</code>目录下的所有jar文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x 1    3860502 Mar 15  2017 cldrdata.jar</span><br><span class="line">-rwxr-xr-x 1       8286 Mar 15  2017 dnsns.jar</span><br><span class="line">-rwxr-xr-x 1      44516 Mar 15  2017 jaccess.jar</span><br><span class="line">-rwxr-xr-x 1   18490072 Mar 15  2017 jfxrt.jar</span><br><span class="line">-rwxr-xr-x 1    1179093 Mar 15  2017 localedata.jar</span><br><span class="line">-rwxr-xr-x 1       1269 Mar 15  2017 meta-index</span><br><span class="line">-rwxr-xr-x 1    2022531 Mar 15  2017 nashorn.jar</span><br><span class="line">-rwxr-xr-x 1      42154 Mar 15  2017 sunec.jar</span><br><span class="line">-rwxr-xr-x 1     280161 Mar 15  2017 sunjce_provider.jar</span><br><span class="line">-rwxr-xr-x 1     251327 Mar 15  2017 sunpkcs11.jar</span><br><span class="line">-rwxr-xr-x 1      68924 Mar 15  2017 zipfs.jar</span><br></pre></td></tr></table></figure>
+<p>所以，只单单指定了额外依赖的jar包后，就会导致ext目录下的jar包无法加载，而这次我们新增的加解密模块使用了<code>HmacSHA256</code>算法，依赖于<code>sunjce_provider.jar</code>包的内容，当我们在本地环境调试时，直接IDEA启动，没有出现依赖加载错误的问题，而当在测试环境使用启动脚本启动并且指定了<code>-Djava.ext.dirs</code>就导致了依赖出错。</p>
+<h3 id="问题解决："><a href="#问题解决：" class="headerlink" title="问题解决："></a>问题解决：</h3><p>问题已经找出，那么解决就很简单，<code>-Djava.ext.dirs</code>引入多个路径加入Java自带ext路径即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java  -Djava.ext.dirs=../lib:$JAVA_HOME/jre/lib/ext -jar</span><br></pre></td></tr></table></figure>
 
       
     </div>
 
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Elietio</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题.html" title="一次-Djava.ext.dir配置不当的问题">https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/排错/" rel="tag"><i class="fa fa-tag"></i> 排错</a>
+          
+            <a href="/tags/异常/" rel="tag"><i class="fa fa-tag"></i> 异常</a>
+          
+            <a href="/tags/java-ext-dirs/" rel="tag"><i class="fa fa-tag"></i> java.ext.dirs</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/Mybatis一对多、多对多查询时数据覆盖问题.html" rel="next" title="Mybatis一对多、多对多查询时数据覆盖问题">
+                <i class="fa fa-chevron-left"></i> Mybatis一对多、多对多查询时数据覆盖问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -568,8 +765,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -590,7 +796,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -692,7 +898,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -786,6 +1002,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述："><span class="nav-number">1.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题排查："><span class="nav-number">2.</span> <span class="nav-text">问题排查：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题解决："><span class="nav-number">3.</span> <span class="nav-text">问题解决：</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
         <div class="back-to-top">
@@ -807,7 +1040,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -950,6 +1183,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
 
   
 
@@ -999,6 +1236,8 @@
 
 
 
+
+  
 
 
   

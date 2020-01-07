@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.elietio.xyz/"/>
-  <updated>2019-10-12T14:48:59.999Z</updated>
+  <updated>2020-01-07T13:59:25.325Z</updated>
   <id>https://www.elietio.xyz/</id>
   
   <author>
@@ -15,6 +15,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一次-Djava.ext.dir配置不当的问题</title>
+    <link href="https://www.elietio.xyz/2020/01/%E4%B8%80%E6%AC%A1-Djava.ext.dir%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E7%9A%84%E9%97%AE%E9%A2%98.html"/>
+    <id>https://www.elietio.xyz/2020/01/一次-Djava.ext.dir配置不当的问题.html</id>
+    <published>2020-01-07T12:26:54.000Z</published>
+    <updated>2020-01-07T13:59:25.325Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常<br><a id="more"></a></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.security.NoSuchAlgorithmException: Algorithm HmacSHA256 not available</span><br><span class="line">        at javax.crypto.Mac.getInstance(Mac.java:<span class="number">181</span>)</span><br><span class="line">        ......</span><br></pre></td></tr></table></figure><h3 id="问题排查："><a href="#问题排查：" class="headerlink" title="问题排查："></a>问题排查：</h3><p>服务是springboot的项目，直接打包成jar包，启动脚本中使用<code>java -jar</code>的形式启动。由于用到了一些公司内部封装的依赖jar包，而这些jar必须外部加载不能打进jar里面启动，所以使用了<code>-Djava.ext.dirs</code>去加载外部依赖jar包，这时一个陷阱就出现了，<code>-Djava.ext.dirs</code>会覆盖掉java本身的ext设置，<code>java.ext.dirs</code>指定的目录由ExtClassLoader加载器加载，如果没有指定该系统属性，那么该加载器默认加载<code>$JAVA_HOME/jre/lib/ext</code>目录下的所有jar文件</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x 1    3860502 Mar 15  2017 cldrdata.jar</span><br><span class="line">-rwxr-xr-x 1       8286 Mar 15  2017 dnsns.jar</span><br><span class="line">-rwxr-xr-x 1      44516 Mar 15  2017 jaccess.jar</span><br><span class="line">-rwxr-xr-x 1   18490072 Mar 15  2017 jfxrt.jar</span><br><span class="line">-rwxr-xr-x 1    1179093 Mar 15  2017 localedata.jar</span><br><span class="line">-rwxr-xr-x 1       1269 Mar 15  2017 meta-index</span><br><span class="line">-rwxr-xr-x 1    2022531 Mar 15  2017 nashorn.jar</span><br><span class="line">-rwxr-xr-x 1      42154 Mar 15  2017 sunec.jar</span><br><span class="line">-rwxr-xr-x 1     280161 Mar 15  2017 sunjce_provider.jar</span><br><span class="line">-rwxr-xr-x 1     251327 Mar 15  2017 sunpkcs11.jar</span><br><span class="line">-rwxr-xr-x 1      68924 Mar 15  2017 zipfs.jar</span><br></pre></td></tr></table></figure><p>所以，只单单指定了额外依赖的jar包后，就会导致ext目录下的jar包无法加载，而这次我们新增的加解密模块使用了<code>HmacSHA256</code>算法，依赖于<code>sunjce_provider.jar</code>包的内容，当我们在本地环境调试时，直接IDEA启动，没有出现依赖加载错误的问题，而当在测试环境使用启动脚本启动并且指定了<code>-Djava.ext.dirs</code>就导致了依赖出错。</p><h3 id="问题解决："><a href="#问题解决：" class="headerlink" title="问题解决："></a>问题解决：</h3><p>问题已经找出，那么解决就很简单，<code>-Djava.ext.dirs</code>引入多个路径加入Java自带ext路径即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java  -Djava.ext.dirs=../lib:$JAVA_HOME/jre/lib/ext -jar</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题描述：&quot;&gt;&lt;a href=&quot;#问题描述：&quot; class=&quot;headerlink&quot; title=&quot;问题描述：&quot;&gt;&lt;/a&gt;问题描述：&lt;/h3&gt;&lt;p&gt;服务新增一个加解密模块后,本地调试OK部署到测试环境启动开始功能测试，却发现相关功能异常，查看服务日志发现以下异常&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="https://www.elietio.xyz/categories/Java/"/>
+    
+    
+      <category term="排错" scheme="https://www.elietio.xyz/tags/%E6%8E%92%E9%94%99/"/>
+    
+      <category term="异常" scheme="https://www.elietio.xyz/tags/%E5%BC%82%E5%B8%B8/"/>
+    
+      <category term="java.ext.dirs" scheme="https://www.elietio.xyz/tags/java-ext-dirs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mybatis一对多、多对多查询时数据覆盖问题</title>
+    <link href="https://www.elietio.xyz/2019/12/Mybatis%E4%B8%80%E5%AF%B9%E5%A4%9A%E3%80%81%E5%A4%9A%E5%AF%B9%E5%A4%9A%E6%9F%A5%E8%AF%A2%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98.html"/>
+    <id>https://www.elietio.xyz/2019/12/Mybatis一对多、多对多查询时数据覆盖问题.html</id>
+    <published>2019-12-21T13:25:23.000Z</published>
+    <updated>2020-01-07T14:07:05.271Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>在使用mybatis查询一对多结果返回对象的场景中，当主表关联的多条数据完全一致时，返回的对象只有第一条数据<br><a id="more"></a></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">  A.BOND_ID,</span><br><span class="line">  A.USER_ID,</span><br><span class="line">  B.RESULT_ID,</span><br><span class="line">  B.RATE</span><br><span class="line"><span class="keyword">from</span> TABLEA A</span><br><span class="line">  <span class="keyword">left</span> <span class="keyword">join</span> TABLEAB B</span><br><span class="line">    <span class="keyword">on</span> A.ID = B.BID_ID</span><br></pre></td></tr></table></figure><table><thead><tr><th>BOND_ID</th><th>USER_ID</th><th>RESULT_ID</th><th>RATE</th></tr></thead><tbody><tr><td>100000000000001892</td><td>abc</td><td>10000001</td><td>111</td></tr><tr><td>100000000000001892</td><td>abc</td><td>10000001</td><td>111</td></tr><tr><td>100000000000001892</td><td>abc</td><td>10000001</td><td>111</td></tr></tbody></table><p>映射的xml如下</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"xxx"</span> <span class="attr">type</span>=<span class="string">"xxx"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"BOND_ID"</span> <span class="attr">property</span>=<span class="string">"bondID"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"USER_ID"</span> <span class="attr">property</span>=<span class="string">"userID"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"resultList"</span> <span class="attr">ofType</span>=<span class="string">"xxx"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"RESULT_ID"</span> <span class="attr">property</span>=<span class="string">"resultID"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"RATE"</span> <span class="attr">property</span>=<span class="string">"rate"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure><p>按照设想，返回的 bondID=100000000000001892的对象里面的resultList应该包含三条完全一样的数据，但是实际的结果却是只有一条</p><h3 id="问题排查："><a href="#问题排查：" class="headerlink" title="问题排查："></a>问题排查：</h3><p>resultMap中如果不定义类似主键之类的能够区分每一条结果集的字段的话，当数据完全一致的时候会引起后面一条数据覆盖前面一条数据的现象</p><h3 id="问题解决："><a href="#问题解决：" class="headerlink" title="问题解决："></a>问题解决：</h3><p>查询时将一对多的多表的自增主键ID也查询出来，这样resultMap映射的数据就不会完全一致，避免了这个问题，所以在使用mybatis查询的时候最好将表的主键ID查询出来，如果不需要返回ID字段，可以在代码层面实体类转换JSON返回屏蔽掉。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题描述：&quot;&gt;&lt;a href=&quot;#问题描述：&quot; class=&quot;headerlink&quot; title=&quot;问题描述：&quot;&gt;&lt;/a&gt;问题描述：&lt;/h3&gt;&lt;p&gt;在使用mybatis查询一对多结果返回对象的场景中，当主表关联的多条数据完全一致时，返回的对象只有第一条数据&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="https://www.elietio.xyz/categories/Java/"/>
+    
+    
+      <category term="排错" scheme="https://www.elietio.xyz/tags/%E6%8E%92%E9%94%99/"/>
+    
+      <category term="mybatis" scheme="https://www.elietio.xyz/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>keepAlive解决druid空闲连接socket timeout 15分钟</title>
+    <link href="https://www.elietio.xyz/2019/12/keepAlive%E8%A7%A3%E5%86%B3druid%E7%A9%BA%E9%97%B2%E8%BF%9E%E6%8E%A5socket%20timeout%2015%E5%88%86%E9%92%9F.html"/>
+    <id>https://www.elietio.xyz/2019/12/keepAlive解决druid空闲连接socket timeout 15分钟.html</id>
+    <published>2019-12-06T12:26:54.000Z</published>
+    <updated>2020-01-07T13:57:28.622Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>测试环境发现了一个很奇怪的现象，一台服务器出现了请求卡顿15分钟然后才执行SQL返回结果的现象<br><a id="more"></a></p><h3 id="问题排查："><a href="#问题排查：" class="headerlink" title="问题排查："></a>问题排查：</h3><p>最开始我们认为是网络问题，因为这台服务器网络环境比较特殊，正常我们环境的应用服务器和数据库服务器是同一网段的，而这台服务器和数据库服务器并不在同一网段，存在防火墙策略，但是后来发现能够稳定复现，并且每次都是发生在服务空闲一段时间后第一次请求，由于我们使用的是druid，于是查询了相关问题，果然网络上已经有了很多相关的描述</p><p><a href="https://my.oschina.net/u/3434392/blog/3017866" target="_blank" rel="noopener">druid下莫名其妙hold15分钟+。疑是socket timeout超时15分钟后，重建了新连接导致</a></p><p><a href="https://github.com/alibaba/druid/issues/2905" target="_blank" rel="noopener">从连接池中获取到失效连接，在检验连接有效性时出现长时间等待，大概15分钟 #2905</a></p><p>大致原因是这样，当应用服务器和数据库服务器直接存在防火墙策略时，如果服务空闲时间过长，会被防火墙主动断开数据库连接，但是此时druid并未感知，此时当有请求过来时，如果druid配置了<code>testWhileIdle</code>（申请连接的时候检测，如果空闲时间大于<code>timeBetweenEvictionRunsMillis</code>，执行<code>validationQuery</code>检测连接是否有效。），那么将进行一次检测，检测的方式也是根据配置的策略，一般是<code>select 1 from dual</code> ，由于这个连接已经被防火墙断掉，根本到达不了数据库，而druid这边则在一直等待，而这个等待的超时受到<code>socket timeout</code>限制，而我们服务器本身的系统<code>socket timeout</code>设置就是15分钟，所以druid会一直hold15分钟，直到触发超时重新建立连接。所以问题就出现了druid无法主动恢复防火墙主动断开的连接，只有当触发超时才能进行重建连接。</p><h3 id="问题解决："><a href="#问题解决：" class="headerlink" title="问题解决："></a>问题解决：</h3><p>问题解决的思路有两种，第一钟思路，更改jdbc的<code>socke timeout</code>，但是不建议，因为如果要能够快速重连，那么这个<code>socket timeout</code>就需要配置很短，但是这个时间很短会导致执行过长的SQL无法返回结果，<code>socket timeout</code>必须大于<code>statement timeout</code>，否则<code>socket timeout</code>先生效则<code>statement timeout</code>毫无意义，所以即使配置几分钟还是会出现请求hold的现象，因此不合适。</p><p>第二种思路，既然长时间空闲后连接会被防火墙断开，那么维持一个心跳，不让连接被防火墙断开即可，因此，需要引入druid的<code>keepAlive</code></p><p>引入<a href="https://github.com/alibaba/druid/wiki/KeepAlive_cn" target="_blank" rel="noopener">druid GitHub</a>上对此配置的解释</p><blockquote><p>在Druid-1.0.27之前的版本，DruidDataSource建议使用TestWhileIdle来保证连接的有效性，但仍有很多场景需要对连接进行保活处理。在1.0.28版本之后，新加入keepAlive配置，缺省关闭。使用keepAlive功能，建议使用1.1.16或者更高版本</p><h1 id="打开KeepAlive之后的效果"><a href="#打开KeepAlive之后的效果" class="headerlink" title="打开KeepAlive之后的效果"></a>打开KeepAlive之后的效果</h1><ol><li>初始化连接池时会填充到minIdle数量。</li><li>连接池中的minIdle数量以内的连接，空闲时间超过minEvictableIdleTimeMillis，则会执行keepAlive操作。</li><li>当网络断开等原因产生的由ExceptionSorter检测出来的死连接被清除后，自动补充连接到minIdle数量。</li></ol></blockquote><p>开启连接保活配置<code>keepAlive</code>,对于<code>minIdle</code>以内的连接，按照<code>timeBetweenEvictionRunsMillis</code>间隔进行保活检测，当空闲时间大于<code>minEvictableIdleTimeMillis</code>，发送心跳保持连接活跃，只要发送保活心跳的时间间隔小于防火墙断开空闲连接的时间即可。对于下面配置，只有1个空闲连接在空闲状态下会在5分钟左右进行心跳，保持长时间存活。</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">minIdle:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">timeBetweenEvictionRunsMillis:</span> <span class="number">60000</span></span><br><span class="line"><span class="attr">minEvictableIdleTimeMillis:</span> <span class="number">300000</span></span><br><span class="line"><span class="attr">validationQuery:</span> <span class="string">SELECT</span> <span class="number">1</span> <span class="string">FROM</span> <span class="string">DUAL</span></span><br><span class="line"><span class="attr">validationQueryTimeout:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">keepAlive:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">testWhileIdle:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">....</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题描述：&quot;&gt;&lt;a href=&quot;#问题描述：&quot; class=&quot;headerlink&quot; title=&quot;问题描述：&quot;&gt;&lt;/a&gt;问题描述：&lt;/h3&gt;&lt;p&gt;测试环境发现了一个很奇怪的现象，一台服务器出现了请求卡顿15分钟然后才执行SQL返回结果的现象&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="https://www.elietio.xyz/categories/Java/"/>
+    
+    
+      <category term="keepAlive" scheme="https://www.elietio.xyz/tags/keepAlive/"/>
+    
+      <category term="druid" scheme="https://www.elietio.xyz/tags/druid/"/>
+    
+      <category term="socketRead0" scheme="https://www.elietio.xyz/tags/socketRead0/"/>
+    
+      <category term="socket timeout" scheme="https://www.elietio.xyz/tags/socket-timeout/"/>
+    
+  </entry>
   
   <entry>
     <title>谷歌SLOT A/B机制下安卓刷入TWRP和Magisk以及OTA的一些方法</title>
@@ -60,9 +138,9 @@
     
       <category term="排错" scheme="https://www.elietio.xyz/tags/%E6%8E%92%E9%94%99/"/>
     
-      <category term="异常" scheme="https://www.elietio.xyz/tags/%E5%BC%82%E5%B8%B8/"/>
-    
       <category term="socketRead0" scheme="https://www.elietio.xyz/tags/socketRead0/"/>
+    
+      <category term="异常" scheme="https://www.elietio.xyz/tags/%E5%BC%82%E5%B8%B8/"/>
     
   </entry>
   
